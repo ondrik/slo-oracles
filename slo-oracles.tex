@@ -1,0 +1,282 @@
+\documentclass{beamer}
+
+\mode<presentation>
+{
+    %\usetheme{AnnArbor}
+    %\usetheme{Antibes}
+    %\usetheme{Bergen}
+    %\usetheme{Berkeley}
+    %\usetheme{Berlin}
+    %\usetheme{Boadilla}
+    \usetheme{CambridgeUS}
+    %\usetheme{Copenhagen}
+    %\usetheme{Darmstadt}
+    %\usetheme{Dresden}
+    %\usetheme{Frankfurt}
+    %\usetheme{Goettingen}
+    %\usetheme{Hannover}
+    %\usetheme{Ilmenau}
+    %\usetheme{JuanLesPins}
+    %\usetheme{Luebeck}
+    %\usetheme{Madrid}
+    %\usetheme{Malmoe}
+    %\usetheme{Marburg}
+    %\usetheme{Montpellier}
+    %\usetheme{PaloAlto}
+    %\usetheme{Rochester}
+    %\usetheme{Singapore}            % maybe
+    %\usetheme{Szeged}
+    %\usetheme{Warsaw}
+    %\setbeamercovered{transparent}
+    %\usecolortheme{seahorse}
+    \usecolortheme{dolphin}
+    %\usecolortheme{dove}
+}
+
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\setbeamertemplate{enumerate item}[square]
+\setbeamertemplate{section in toc}[square]
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{palatino}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{alltt}
+\usepackage{wasysym}
+
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Pcl}{\mathsf{\mathbf{P}}}
+\newcommand{\NPcl}{\mathsf{\mathbf{NP}}}
+\newcommand{\REcl}{\mathsf{\mathbf{RE}}}
+\newcommand{\coREcl}{\mathsf{\mathbf{coRE}}}
+\newcommand{\Rcl}{\mathsf{\mathbf{R}}}
+
+\newcommand{\qquest}{q_{\,?}}
+\newcommand{\qyes}{q_{\,\mathsf{YES}}}
+\newcommand{\qno}{q_{\,\mathsf{NO}}}
+
+\newcommand{\HP}{\mathit{HP}}
+\newcommand{\coHP}{\mathit{coHP}}
+
+\newcommand{\st}{\,|\,}
+
+\newcommand{\hlbl}[1]{\textcolor{blue}{#1}}
+
+
+\title{Oracle Machines}
+
+\author{Complexity Theory}
+
+\date{}
+
+\begin{document}
+  
+%*******************************************************************************
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+%*******************************************************************************
+
+%===============================================================================
+\section{Oracle Machines}\label{}
+%===============================================================================
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsection}
+  \begin{itemize}
+    \item  Computation in an \hlbl{alternative universe}.
+    \item  An algorithm can once in a while ask an \hlbl{oracle} a yes/no
+      question and immediately get the answer.
+    \item  Relations between complexity classes may be different in these
+      universes,
+      \begin{itemize}
+        \item  later, we will show that there are oracles for which both
+          \begin{equation*}
+            \Pcl = \NPcl \hspace{1cm} \mbox{and} \hspace{1cm} \Pcl \neq \NPcl~.
+          \end{equation*}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsection}
+  \begin{definition}[Turing machine with oracle]
+    Given an arbitrary language $\X \subseteq \Sigma^{*}$, a \hlbl{Turing
+    machine with oracle $M^{\X}$} (or an \hlbl{Oracle machine}) is a multi-tape
+    deterministic Turing machine with a special \hlbl{query tape} and three
+    special states: $\qquest$, the \hlbl{query state}, and $\qyes, \qno$, the
+    \hlbl{answer states}.
+    The \hlbl{computation} of $M^{\X}$ proceeds like in an ordinary TM,
+    except from transitions from $\qquest$.
+    Let $w \in \Sigma^{*}$ be the content of the query tape, then
+    $M^{\X}$ moves from $\qquest$ to $\qyes$ iff $w \in \X$ and to $\qno$
+    otherwise.
+  \end{definition}
+
+  \vspace{3mm}
+  Similarly for \hlbl{nondeterministic Turing machines with oracles}.
+
+
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsection}
+  Time complexity for oracle machines is defined in the same way as time
+  complexity for Turing machines,
+  \begin{itemize}
+    \item  each \hlbl{query step} counts as one ordinary step,
+    \item  this can make oracle machines \hlbl{very} powerful.
+  \end{itemize}
+
+  \vspace{3mm}
+  Oracle machines have many uses in the theory of \hlbl{computational
+  complexity} and \hlbl{decidability}.
+\end{frame}
+%*******************************************************************************
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\subsection{Oracle Machines and Decidability}\label{}
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsubsection}
+  Consider the following two familiar languages:
+  \begin{align*}
+      \HP_1 &= \{<\!M;x\!> \st \mbox{TM $M$ halts on $x$}\} \\
+    \coHP_1 &= \{<\!M;x\!> \st \mbox{TM $M$ does not halt on $x$}\}
+  \end{align*}
+  \vspace{3mm}
+  Note that:
+  \begin{itemize}
+    \item  $\HP_1 \in \REcl \setminus \Rcl$ and $\coHP_1 \in \coREcl \setminus
+      \Rcl$,
+    \item  further, $\HP_1$ is \hlbl{complete} for $\REcl$ and $\coHP_1$ is
+      \hlbl{complete} for $\coREcl$.
+  \end{itemize}
+  \vspace{5mm}
+  \pause
+  Now, consider the following Oracle machine: $M^{\HP_1}$,
+  \begin{itemize}
+    \item  obviously, $M^{\HP_1}$ is able to \hlbl{decide} both $\HP_1$ and
+      $\coHP_1$.
+  \end{itemize}
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsubsection}
+  However, consider the following two languages:
+  \begin{equation*}
+  \begin{array}{rll}
+      \HP_2 &= \{<\!M^{\HP_1};x\!>   & \st \mbox{OM\, $M^{\HP_1}$ halts on $x$}\} \\
+    \coHP_2 &= \{<\!M^{\coHP_1};x\!> & \st \mbox{OM\, $M^{\coHP_1}$ does not halt on $x$}\}
+  \end{array}
+  \end{equation*}
+  \pause
+  \begin{itemize}
+    \item  It is easy to see that $M^{\HP_1}$ is able to \hlbl{accept} $\HP_2$,
+    \item  nonetheless, $M^{\HP_1}$ \alert{can neither}
+      \begin{equation*}
+        \mbox{\hlbl{decide}}~\HP_2\hspace{1cm}\mbox{\alert{nor}}\hspace{1cm}
+        \mbox{\hlbl{accept}}~\coHP_2,
+      \end{equation*}
+    \item  this can be also shown using \hlbl{diagonalisation}.
+  \end{itemize}
+  \pause
+  \vspace{2mm}
+  Further, one can create $M^{\HP_2}$,
+  \begin{itemize}
+    \item  for which there exist $\HP_3$ and $\coHP_3$,
+    \item  and so on \dots
+  \end{itemize}
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{definition}[Recursive relation]
+    Relation $R \subseteq \left(\Sigma^{*}\right)^k$ is \hlbl{recursive} if the
+    language $L_R$ is recursive,
+    \vspace{-2mm}
+    \begin{equation*}
+    L_R = \{x_1; \dots ; x_k \st (x_1, \dots, x_k) \in R\}~.
+    \end{equation*}
+  \end{definition}
+
+  \pause
+  \begin{definition}[Arithmetical hierarchy]
+    For $k \geq 0$, let \hlbl{$\Sigma_k$} be the class of all languages $L$ for
+    which there is a recursive $(k+1)$-ary relation $R$ such that
+    \vspace{-2mm}
+    \begin{equation*}
+      L = \{x \st \exists x_1 \forall x_2 \dots Q_k x_k\,.\,(x_1, \dots, x_k, x)
+      \in R\}~.
+    \vspace{-2mm}
+    \end{equation*}
+%    Further, let \hlbl{$\Pi_k$} $= \mathsf{\mathbf{co}}\Sigma_k$, or, equivalently,
+    Let \hlbl{$\Pi_k$} be the class of languages $L$ for which there is $R$ s.t.
+    \vspace{-2mm}
+    \begin{equation*}
+      L = \{x \st \forall x_1 \exists x_2 \dots Q_k x_k\,.\,(x_1, \dots, x_k, x)
+      \in R\}~.
+    \vspace{-2mm}
+    \end{equation*}
+    The family $\left\{\Sigma_k\st k\geq 0\right\}$ is called the
+    \hlbl{arithmetical hierarchy}.
+  \end{definition}
+  \pause
+  Note that for $k \geq 0$, it holds that $\Pi_k = \mathsf{\mathbf{co}}\Sigma_k$.
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsubsection}
+  Interesting properties:
+  \begin{itemize}
+    \item  $\Sigma_0 = \Pi_0 = \Rcl$,
+    \item  $\Sigma_1 = \REcl$, and $\Pi_1 = \coREcl$,
+    \item  $\Sigma_{k+1} \supset \Sigma_k, \Pi_k$, and $\Pi_{k+1} \supset
+      \Sigma_k, \Pi_k$.
+  \end{itemize}
+  \vspace{3mm}
+  Examples of problems and their membership:
+  \begin{itemize}
+    \item  $\HP_1 \in \Sigma_1$, and $\coHP_1 \in \Pi_1$,
+    \item  $\HP_2 \in \Sigma_2$, and $\coHP_2 \in \Pi_2 \setminus \Pi_1$,
+    \item  \dots
+    \item  $\left\{<\!M\!>\st L(M) = \Sigma^{*}\right\} \in \Pi_2 \setminus
+      \Pi_1$,
+    \item  $\left\{<\!M\!>\st L(M)~\mbox{is infinite}\right\} \in ???$.
+  \end{itemize}
+  \vspace{3mm}
+  AH enables finer classification of undecidable problems.
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{\insertsubsection}
+  finer classification of undecidable problems
+\end{frame}
+%*******************************************************************************
+
+%*******************************************************************************
+\begin{frame}
+  \frametitle{Oracle Machines and Function Problems}
+\end{frame}
+%*******************************************************************************
+
+\end{document}
